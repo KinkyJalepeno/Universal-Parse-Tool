@@ -4,8 +4,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
-
 import java.io.File;
+
 
 public class MainController {
 
@@ -30,9 +30,10 @@ public class MainController {
 
         if (file != null) {
 
-            filePathField.setText(file.getAbsolutePath());
-
             filePath = file.getAbsolutePath();
+            filePathField.setText(filePath);
+
+
             isPathValid = true;
         }
     }
@@ -41,11 +42,27 @@ public class MainController {
     void parseButtonPressed() {
 
         if (!isPathValid) {
-            textArea.appendText("Oh dear gimp \n");
+            textArea.appendText("You must select a file to parse ! \n");
 
         } else {
-            textArea.appendText(filePath + " is a valid file");
+            getCdrType(filePath);
         }
 
     }
+
+    private void getCdrType(String filePath) {
+
+        if (filePath.contains(".log")) {
+            System.out.println("This is a Hypermedia CDR");
+        } else if (filePath.contains(".txt")) {
+            System.out.println("This is a 2N CDR");
+        } else if (filePath.contains("*.tmp") || filePath.contains("*.dat")) {
+            System.out.println("This is a Quescom CDR");
+        } else {
+            System.out.println("I don't recognise that file type");
+        }
+
+    }
+
+
 }
