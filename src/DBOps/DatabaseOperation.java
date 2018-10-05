@@ -1,4 +1,4 @@
-package MainCode;
+package DBOps;
 
 public class DatabaseOperation {
 
