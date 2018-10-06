@@ -21,7 +21,8 @@ public class Main extends Application {
     private Boolean isPathValid = false;
 
     private TextArea textArea;
-    private String url = "jdbc:sqlite:cdrStore.db";
+    private final static String url = "jdbc:sqlite:cdrStore.db";
+    private static Connection conn = null;
 
     @Override
     public void start(Stage primaryStage) {
@@ -66,7 +67,6 @@ public class Main extends Application {
 
     private void connectToDatabase() {
 
-        Connection conn = null;
         try{
 
             conn = DriverManager.getConnection(url);
