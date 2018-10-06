@@ -11,6 +11,9 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 public class Main extends Application {
 
@@ -18,6 +21,7 @@ public class Main extends Application {
     private Boolean isPathValid = false;
 
     private TextArea textArea;
+    private String url = "jdbc:sqlite:cdrStore.db";
 
     @Override
     public void start(Stage primaryStage) {
@@ -56,6 +60,22 @@ public class Main extends Application {
 
         parseButton.setOnAction((event -> checkFilePath()));
 
+        connectToDatabase();
+
+    }
+
+    private void connectToDatabase() {
+
+        Connection conn = null;
+        try{
+
+            conn = DriverManager.getConnection(url);
+            textArea.setText("Connection to DB established");
+
+        }catch(SQLException e){
+            textArea.setText("Unable to connect to DB");
+            System.out.println(e.getMessage());
+        }
     }
 
     private void chooseFile(TextField filePathField) {
