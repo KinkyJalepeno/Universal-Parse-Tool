@@ -1,5 +1,7 @@
 package MainCode;
 
+import DBOps.DbOperation;
+import DBOps.GetHyperData;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -55,6 +57,7 @@ public class Main extends Application {
 
         Scene scene = new Scene(gridPane, 390, 400);
         primaryStage.setScene(scene);
+        primaryStage.setMaxWidth(500);
         primaryStage.show();
 
         browseButton.setOnAction((event -> chooseFile(filePathField)));
@@ -111,12 +114,25 @@ public class Main extends Application {
     private void getCdrType(String filePath) {
 
         if (filePath.contains(".log")) {
-            System.out.println("This is a Hypermedia CDR");
+
+            try {
+                DbOperation operation = new GetHyperData(url);
+                textArea.setText(operation.initDatabase());
+            }catch(SQLException e){
+                System.out.println("Something went wrong..\n" + e.getMessage());
+
+            }
+
         } else if (filePath.contains(".txt")) {
+
             System.out.println("This is a 2N CDR");
+
         } else if (filePath.contains("*.tmp") || filePath.contains("*.dat")) {
+
             System.out.println("This is a Quescom CDR");
+
         } else {
+
             System.out.println("I don't recognise that file type");
         }
 
