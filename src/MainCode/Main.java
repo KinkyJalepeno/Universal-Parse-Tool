@@ -28,7 +28,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        primaryStage.setTitle("Dave's Grid Experiment");
+        primaryStage.setTitle("Dave's Universal CDR Parser");
 
 
         Button browseButton = new Button("Browse");
@@ -57,7 +57,7 @@ public class Main extends Application {
 
         Scene scene = new Scene(gridPane, 390, 400);
         primaryStage.setScene(scene);
-        primaryStage.setMaxWidth(500);
+        primaryStage.setMaxWidth(400);
         primaryStage.show();
 
         browseButton.setOnAction((event -> chooseFile(filePathField)));
@@ -114,7 +114,6 @@ public class Main extends Application {
     private void getCdrType(String filePath) {
 
         if (filePath.contains(".log")) {
-
             try {
                 DbOperation operation = new GetHyperData(url);
                 textArea.setText(operation.initDatabase());
@@ -122,17 +121,11 @@ public class Main extends Application {
                 System.out.println("Something went wrong..\n" + e.getMessage());
 
             }
-
         } else if (filePath.contains(".txt")) {
-
             System.out.println("This is a 2N CDR");
-
         } else if (filePath.contains("*.tmp") || filePath.contains("*.dat")) {
-
             System.out.println("This is a Quescom CDR");
-
         } else {
-
             System.out.println("I don't recognise that file type");
         }
 
