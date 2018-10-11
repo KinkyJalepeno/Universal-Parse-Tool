@@ -9,7 +9,7 @@ public class GetQuescomData implements DbOperation {
     }
 
     @Override
-    public void getData() {
+    public void getData(String filePath) {
 
     }
 }

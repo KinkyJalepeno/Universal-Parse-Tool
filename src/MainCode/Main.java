@@ -6,9 +6,12 @@ import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -34,16 +37,30 @@ public class Main extends Application {
         Button browseButton = new Button("Browse");
         Button parseButton = new Button("Parse-it");
 
+        Label smsSent = new Label("SMS Sent:");
+        Label smsSentValue = new Label("0");
+        Label minsUsed = new Label("Mins Used: ");
+        Label minsUsedValue = new Label("0");
+        Label recordsParsed = new Label("Records Parsed: ");
+        Label recordsParsedValue = new Label("0");
+
+        smsSent.setFont(Font.font(smsSent.getFont().toString(), FontWeight.BOLD, 12));
+        minsUsed.setFont(Font.font(minsUsed.getFont().toString(), FontWeight.BOLD, 12));
+        recordsParsed.setFont(Font.font(minsUsed.getFont().toString(), FontWeight.BOLD, 12));
+
+
         textArea = new TextArea();
         textArea.setPrefHeight(300);
 
         TextField filePathField = new TextField();
         filePathField.setPrefSize(300, 28);
 
+        smsSentValue.setMinWidth(40);
+
+
         GridPane gridPane = new GridPane();
         gridPane.setPadding(new Insets(10));
-        gridPane.setHgap(15);
-        gridPane.setVgap(20);
+        gridPane.setVgap(10);
 
         //allow textarea and textfield to expand if window re-sized
         textArea.prefHeightProperty().bind(gridPane.heightProperty());
@@ -51,9 +68,19 @@ public class Main extends Application {
         filePathField.prefWidthProperty().bind(gridPane.widthProperty());
 
         gridPane.add(browseButton, 0, 0, 1, 1);
-        gridPane.add(filePathField, 1, 0, 4, 1);
         gridPane.add(parseButton, 0, 1, 1, 1);
-        gridPane.add(textArea, 0, 2, 5, 1);
+
+        gridPane.add(recordsParsed, 0, 2, 1, 1);
+        gridPane.add(recordsParsedValue, 1, 2, 1, 1);
+
+        gridPane.add(textArea, 0, 3, 5, 1);
+        gridPane.add(filePathField, 1, 0, 4, 1);
+
+        gridPane.add(smsSent, 1, 1, 1, 1);
+        gridPane.add(smsSentValue, 2, 1, 1, 1);
+
+        gridPane.add(minsUsed, 3, 1, 1, 1);
+        gridPane.add(minsUsedValue, 4, 1, 1, 1);
 
         Scene scene = new Scene(gridPane, 390, 400);
         primaryStage.setScene(scene);
@@ -73,7 +100,7 @@ public class Main extends Application {
         try{
 
             conn = DriverManager.getConnection(url);
-            textArea.setText("Connection to DB established");
+            textArea.setText("Connection to DB established \n");
 
         }catch(SQLException e){
             textArea.setText("Unable to connect to DB");
@@ -116,16 +143,23 @@ public class Main extends Application {
         if (filePath.contains(".log")) {
             try {
                 DbOperation operation = new GetHyperData(url);
-                textArea.setText(operation.initDatabase());
+                System.out.println(operation.initDatabase() + "\n");
+
+                operation.getData(filePath);
             }catch(SQLException e){
                 System.out.println("Something went wrong..\n" + e.getMessage());
 
             }
         } else if (filePath.contains(".txt")) {
+
             System.out.println("This is a 2N CDR");
+
         } else if (filePath.contains("*.tmp") || filePath.contains("*.dat")) {
+
             System.out.println("This is a Quescom CDR");
+
         } else {
+
             System.out.println("I don't recognise that file type");
         }
 

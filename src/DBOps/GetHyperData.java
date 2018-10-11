@@ -4,25 +4,21 @@ import java.sql.*;
 
 public class GetHyperData implements DbOperation {
 
-    private String url;
     private Connection conn;
     private Statement stmt;
-    private PreparedStatement ps;
+
 
     public GetHyperData(String url) throws SQLException {
 
-        this.url = url;
         conn = DriverManager.getConnection(url);
         stmt = conn.createStatement();
 
     }
 
     @Override
-    public String initDatabase() throws SQLException {
+    public String initDatabase() {
 
         String sqlCommand ="delete from hyper";
-        ps = conn.prepareStatement(sqlCommand);
-
         try{
             stmt.executeQuery(sqlCommand);
 
@@ -34,7 +30,9 @@ public class GetHyperData implements DbOperation {
     }
 
 
-    public void getData() {
+    public void getData(String filePath) {
+
+        System.out.println("Get the data from file");
 
     }
 }

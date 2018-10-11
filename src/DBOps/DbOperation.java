@@ -6,6 +6,6 @@ public interface DbOperation {
 
     String initDatabase() throws SQLException;
 
-    void getData();
+    void getData(String filepath);
 
 }

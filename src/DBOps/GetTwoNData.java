@@ -1,13 +1,15 @@
 package DBOps;
 
-public class GetTwoNData implements DBInterface {
+public class GetTwoNData implements DbOperation {
     @Override
-    public void initDatabase() {
+    public String initDatabase() {
+
+        return "fake";
 
     }
 
     @Override
-    public void getData() {
+    public void getData(String filePath) {
 
     }
 }
