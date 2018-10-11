@@ -1,5 +1,6 @@
 package MainCode;
 
+import DBOps.DatabaseQuery;
 import DBOps.DbOperation;
 import DBOps.GetHyperData;
 import javafx.application.Application;
@@ -25,6 +26,8 @@ public class Main extends Application {
     private static String filePath;
     private Boolean isPathValid = false;
     private Label recordsParsedValue;
+    private Label smsSentValue;
+    private int totalSent;
 
     private TextArea textArea;
     private final static String url = "jdbc:sqlite:cdrStore.db";
@@ -38,7 +41,7 @@ public class Main extends Application {
         Button parseButton = new Button("Parse-it");
 
         Label smsSent = new Label("SMS Sent:");
-        Label smsSentValue = new Label("0");
+        smsSentValue = new Label("0");
         Label minsUsed = new Label("Mins Used: ");
         Label minsUsedValue = new Label("0");
         Label recordsParsed = new Label("Records Parsed: ");
@@ -97,13 +100,14 @@ public class Main extends Application {
 
     private void connectToDatabase() {
 
-        try{
+        try {
 
             Connection conn = DriverManager.getConnection(url);
             textArea.setText("Connection to DB established \n");
             System.out.println("conn = " + conn);
+            conn.close();
 
-        }catch(SQLException e){
+        } catch (SQLException e) {
             textArea.setText("Unable to connect to DB");
             System.out.println(e.getMessage());
         }
@@ -168,11 +172,44 @@ public class Main extends Application {
 
             operation.getData(filePath);
             recordsParsedValue.setText(String.valueOf(((GetHyperData) operation).getCount()));
+
+            triggerHyperDataQuery();
         } catch (SQLException e) {
             System.out.println("Something went wrong..\n" + e.getMessage());
 
         }
 
+    }
+
+    private void triggerHyperDataQuery() throws SQLException {
+
+        DatabaseQuery query = new DatabaseQuery(url);
+        textArea.clear();
+
+        int numberSent;
+        String simID;
+
+        for (int card = 21; card <= 28; card++) {
+
+            for (int port = 1; port <= 4; port++) {
+
+                textArea.appendText("\n");
+                for (int pos = 1; pos <= 4; pos++) {
+
+                    String sqlCommand = "SELECT scid, SUM(length) FROM hyper WHERE card = '" + card + "' AND port = '" +
+                            port + "' AND position = '" + pos + "';";
+
+                    simID = query.simID(sqlCommand);
+                    numberSent = query.results(sqlCommand);
+
+                    textArea.appendText(card + " / " + port + " / " + pos + " - [count = " + numberSent +
+                            "]        \t[SCID: " + simID + "]\n");
+
+                    totalSent += numberSent;
+                }
+            }
+        }
+        smsSentValue.setText(String.valueOf(totalSent));
     }
 
     private void startTwoNProcess() {

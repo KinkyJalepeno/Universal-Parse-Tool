@@ -79,6 +79,7 @@ public class GetHyperData implements DbOperation {
         stmt.executeBatch();
         conn.commit();
         System.out.println("batch write to DB complete");
+        conn.close();
     }
 
     public int getCount() {
