@@ -22,12 +22,12 @@ import java.sql.SQLException;
 
 public class Main extends Application {
 
-    private String filePath;
+    private static String filePath;
     private Boolean isPathValid = false;
+    private Label recordsParsedValue;
 
     private TextArea textArea;
     private final static String url = "jdbc:sqlite:cdrStore.db";
-    private static Connection conn = null;
 
     @Override
     public void start(Stage primaryStage) {
@@ -42,7 +42,7 @@ public class Main extends Application {
         Label minsUsed = new Label("Mins Used: ");
         Label minsUsedValue = new Label("0");
         Label recordsParsed = new Label("Records Parsed: ");
-        Label recordsParsedValue = new Label("0");
+        recordsParsedValue = new Label("0");
 
         smsSent.setFont(Font.font(smsSent.getFont().toString(), FontWeight.BOLD, 12));
         minsUsed.setFont(Font.font(minsUsed.getFont().toString(), FontWeight.BOLD, 12));
@@ -99,8 +99,9 @@ public class Main extends Application {
 
         try{
 
-            conn = DriverManager.getConnection(url);
+            Connection conn = DriverManager.getConnection(url);
             textArea.setText("Connection to DB established \n");
+            System.out.println("conn = " + conn);
 
         }catch(SQLException e){
             textArea.setText("Unable to connect to DB");
@@ -141,22 +142,16 @@ public class Main extends Application {
     private void getCdrType(String filePath) {
 
         if (filePath.contains(".log")) {
-            try {
-                DbOperation operation = new GetHyperData(url);
-                System.out.println(operation.initDatabase() + "\n");
 
-                operation.getData(filePath);
-            }catch(SQLException e){
-                System.out.println("Something went wrong..\n" + e.getMessage());
+            startHyperProcess();
 
-            }
         } else if (filePath.contains(".txt")) {
 
-            System.out.println("This is a 2N CDR");
+            startTwoNProcess();
 
         } else if (filePath.contains("*.tmp") || filePath.contains("*.dat")) {
 
-            System.out.println("This is a Quescom CDR");
+            startQuescomProcess();
 
         } else {
 
@@ -165,6 +160,26 @@ public class Main extends Application {
 
     }
 
+    private void startHyperProcess() {
+
+        try {
+            DbOperation operation = new GetHyperData(url);
+            System.out.println(operation.initDatabase() + "\n");
+
+            operation.getData(filePath);
+            recordsParsedValue.setText(String.valueOf(((GetHyperData) operation).getCount()));
+        } catch (SQLException e) {
+            System.out.println("Something went wrong..\n" + e.getMessage());
+
+        }
+
+    }
+
+    private void startTwoNProcess() {
+    }
+
+    private void startQuescomProcess() {
+    }
 
     public static void main(String[] args) {
         launch(args);

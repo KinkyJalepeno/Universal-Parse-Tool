@@ -1,16 +1,20 @@
 package DBOps;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.sql.*;
 
 public class GetHyperData implements DbOperation {
 
-    private Connection conn;
     private Statement stmt;
-
+    private int count = 0;
+    private Connection conn;
 
     public GetHyperData(String url) throws SQLException {
 
         conn = DriverManager.getConnection(url);
+        conn.setAutoCommit(false);
         stmt = conn.createStatement();
 
     }
@@ -30,9 +34,55 @@ public class GetHyperData implements DbOperation {
     }
 
 
-    public void getData(String filePath) {
+    public void getData(String filePath) throws SQLException {
 
-        System.out.println("Get the data from file");
+        try {
+            BufferedReader readIn = new BufferedReader(new FileReader(filePath));
+
+            String text;
+            while ((text = readIn.readLine()) != null) {
+                count++;
+
+                if (text.contains("confirmation")) {
+                    continue;
+                }
+                String dataArray[] = text.split("[|]");
+
+                addToBatch(dataArray);
+
+            }
+
+        } catch (IOException | SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        executeBatch();
 
     }
+
+    private void addToBatch(String[] dataArray) throws SQLException {
+        String card = (dataArray[1]);
+        String port = (dataArray[2]);
+        String result = (dataArray[5]);
+        String smsLength = (dataArray[11].substring(4));
+        String scid = dataArray[13];
+        String simPosition = (dataArray[14]);
+
+        String sqlCommand = "INSERT INTO hyper VALUES ('" + card + "','" + port + "','" + result + "','" + smsLength +
+                "','" + scid + "','" + simPosition + "');";
+
+        stmt.addBatch(sqlCommand);
+
+    }
+
+    private void executeBatch() throws SQLException {
+
+        stmt.executeBatch();
+        conn.commit();
+        System.out.println("batch write to DB complete");
+    }
+
+    public int getCount() {
+        return count;
+    }
+
 }
