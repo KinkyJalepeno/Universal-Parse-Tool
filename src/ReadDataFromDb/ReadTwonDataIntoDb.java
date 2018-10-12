@@ -1,17 +1,19 @@
-package DBOps;
+package ReadDataFromDb;
+
+import Interfaces.ReadFileInterface;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class GetTwoNData implements DbOperation {
+public class ReadTwonDataIntoDb implements ReadFileInterface {
 
     private Statement stmt;
     private int count = 0;
     private Connection conn;
 
-    public GetTwoNData(String url) throws SQLException {
+    public ReadTwonDataIntoDb(String url) throws SQLException {
 
         conn = DriverManager.getConnection(url);
         stmt = conn.createStatement();

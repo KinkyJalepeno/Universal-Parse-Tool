@@ -1,17 +1,19 @@
-package DBOps;
+package ReadDataFromDb;
+
+import Interfaces.ReadFileInterface;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.*;
 
-public class GetHyperData implements DbOperation {
+public class ReadHyperDataIntoDb implements ReadFileInterface {
 
     private Statement stmt;
-    private int count = 0;
+    private static int count = 0;
     private Connection conn;
 
-    public GetHyperData(String url) throws SQLException {
+    public ReadHyperDataIntoDb(String url) throws SQLException {
 
         conn = DriverManager.getConnection(url);
         stmt = conn.createStatement();
@@ -84,7 +86,8 @@ public class GetHyperData implements DbOperation {
         conn.close();
     }
 
-    public int getCount() {
+    public static int getCount() {
+
         return count;
     }
 

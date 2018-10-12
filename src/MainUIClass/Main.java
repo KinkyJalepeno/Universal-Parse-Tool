@@ -1,9 +1,9 @@
-package MainCode;
+package MainUIClass;
 
-import DBOps.DatabaseQuery;
-import DBOps.DbOperation;
-import DBOps.GetHyperData;
-import DBOps.GetTwoNData;
+import ReadFileIntoDb.QueryHyperTable;
+import Interfaces.ReadFileInterface;
+import ReadDataFromDb.ReadHyperDataIntoDb;
+import ReadDataFromDb.ReadTwonDataIntoDb;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -167,11 +167,11 @@ public class Main extends Application {
     private void startHyperProcess() {
 
         try {
-            DbOperation operation = new GetHyperData(url);
+            ReadFileInterface operation = new ReadHyperDataIntoDb(url);
             System.out.println(operation.initDatabase() + "\n");
 
             operation.getData(filePath);
-            recordsParsedValue.setText(String.valueOf(((GetHyperData) operation).getCount()));
+            recordsParsedValue.setText(String.valueOf(ReadHyperDataIntoDb.getCount()));
 
             triggerHyperDataQuery();
         } catch (SQLException e) {
@@ -183,17 +183,17 @@ public class Main extends Application {
 
     private void triggerHyperDataQuery() throws SQLException {
 
-        DatabaseQuery query = new DatabaseQuery(url);
-        query.getHyperDataFromDb(textArea);
+        QueryHyperTable query = new QueryHyperTable(url);
+        query.getDataFromDb(textArea);
 
-        smsSentValue.setText(query.getTotalSent());
+        smsSentValue.setText(query.getTotalUsed());
     }
 
     private void startTwoNProcess() {
 
         try{
 
-            DbOperation operation = new GetTwoNData(url);
+            ReadFileInterface operation = new ReadTwonDataIntoDb(url);
             System.out.println(operation.initDatabase() + "\n");
 
 

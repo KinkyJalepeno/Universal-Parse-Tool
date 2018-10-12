@@ -1,6 +1,8 @@
-package DBOps;
+package ReadDataFromDb;
 
-public class GetQuescomData implements DbOperation {
+import Interfaces.ReadFileInterface;
+
+public class ReadQuescomDataIntoDb implements ReadFileInterface {
     @Override
     public String initDatabase() {
 

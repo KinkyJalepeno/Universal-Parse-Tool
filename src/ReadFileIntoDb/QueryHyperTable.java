@@ -1,24 +1,25 @@
-package DBOps;
+package ReadFileIntoDb;
 
+import Interfaces.QueryTableInterface;
 import javafx.scene.control.TextArea;
 
 import java.sql.*;
 
-public class DatabaseQuery {
+public class QueryHyperTable implements QueryTableInterface {
 
     private Statement stmt;
     private Connection conn;
     private ResultSet rs;
     private int totalSent;
 
-    public DatabaseQuery(String url) throws SQLException {
+    public QueryHyperTable(String url) throws SQLException {
 
         conn = DriverManager.getConnection(url);
         stmt = conn.createStatement();
 
     }
 
-    public void getHyperDataFromDb(TextArea textArea) throws SQLException {
+    public void getDataFromDb(TextArea textArea) throws SQLException {
 
         int numberSent;
         String simID;
@@ -49,7 +50,7 @@ public class DatabaseQuery {
 
     }
 
-    public String getTotalSent() {
+    public String getTotalUsed() {
 
         return String.valueOf(totalSent);
     }
