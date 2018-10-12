@@ -1,9 +1,9 @@
 package MainUIClass;
 
-import ReadFileIntoDb.QueryHyperTable;
+import QueryDbTable.QueryHyperTable;
 import Interfaces.ReadFileInterface;
-import ReadDataFromDb.ReadHyperDataIntoDb;
-import ReadDataFromDb.ReadTwonDataIntoDb;
+import ReadFileIntoDb.ReadHyperDataIntoDb;
+import ReadFileIntoDb.ReadTwonDataIntoDb;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;

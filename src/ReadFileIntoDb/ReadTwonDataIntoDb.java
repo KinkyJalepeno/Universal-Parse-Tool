@@ -1,4 +1,4 @@
-package ReadDataFromDb;
+package ReadFileIntoDb;
 
 import Interfaces.ReadFileInterface;
 

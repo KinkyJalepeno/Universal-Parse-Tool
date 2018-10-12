@@ -1,4 +1,4 @@
-package ReadFileIntoDb;
+package QueryDbTable;
 
 import Interfaces.QueryTableInterface;
 import javafx.scene.control.TextArea;
