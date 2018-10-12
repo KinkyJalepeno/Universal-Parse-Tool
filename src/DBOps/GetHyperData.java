@@ -14,7 +14,6 @@ public class GetHyperData implements DbOperation {
     public GetHyperData(String url) throws SQLException {
 
         conn = DriverManager.getConnection(url);
-        conn.setAutoCommit(false);
         stmt = conn.createStatement();
 
     }
@@ -22,12 +21,12 @@ public class GetHyperData implements DbOperation {
     @Override
     public String initDatabase() {
 
-        String sqlCommand ="delete from hyper";
-        try{
+        String sqlCommand = "delete from hyper";
+        try {
             stmt.executeQuery(sqlCommand);
 
 
-        }catch(SQLException e){
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
         return "Database Initialised";
@@ -60,6 +59,9 @@ public class GetHyperData implements DbOperation {
     }
 
     private void addToBatch(String[] dataArray) throws SQLException {
+
+        conn.setAutoCommit(false);
+
         String card = (dataArray[1]);
         String port = (dataArray[2]);
         String result = (dataArray[5]);

@@ -18,7 +18,7 @@ public class DatabaseQuery {
 
     }
 
-    public void getHyperDataFromDb(TextArea textArea){
+    public void getHyperDataFromDb(TextArea textArea) throws SQLException {
 
         int numberSent;
         String simID;
@@ -45,10 +45,11 @@ public class DatabaseQuery {
                 }
             }
         }
+        conn.close();
 
     }
 
-    public String getTotalSent(){
+    public String getTotalSent() {
 
         return String.valueOf(totalSent);
     }

@@ -3,6 +3,7 @@ package MainCode;
 import DBOps.DatabaseQuery;
 import DBOps.DbOperation;
 import DBOps.GetHyperData;
+import DBOps.GetTwoNData;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -27,7 +28,6 @@ public class Main extends Application {
     private Boolean isPathValid = false;
     private Label recordsParsedValue;
     private Label smsSentValue;
-    private int totalSent;
 
     private TextArea textArea;
     private final static String url = "jdbc:sqlite:cdrStore.db";
@@ -190,6 +190,16 @@ public class Main extends Application {
     }
 
     private void startTwoNProcess() {
+
+        try{
+
+            DbOperation operation = new GetTwoNData(url);
+            System.out.println(operation.initDatabase() + "\n");
+
+
+        }catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
     }
 
     private void startQuescomProcess() {
