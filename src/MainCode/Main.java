@@ -184,32 +184,9 @@ public class Main extends Application {
     private void triggerHyperDataQuery() throws SQLException {
 
         DatabaseQuery query = new DatabaseQuery(url);
-        textArea.clear();
+        query.getHyperDataFromDb(textArea);
 
-        int numberSent;
-        String simID;
-
-        for (int card = 21; card <= 28; card++) {
-
-            for (int port = 1; port <= 4; port++) {
-
-                textArea.appendText("\n");
-                for (int pos = 1; pos <= 4; pos++) {
-
-                    String sqlCommand = "SELECT scid, SUM(length) FROM hyper WHERE card = '" + card + "' AND port = '" +
-                            port + "' AND position = '" + pos + "';";
-
-                    simID = query.simID(sqlCommand);
-                    numberSent = query.results(sqlCommand);
-
-                    textArea.appendText(card + " / " + port + " / " + pos + " - [count = " + numberSent +
-                            "]        \t[SCID: " + simID + "]\n");
-
-                    totalSent += numberSent;
-                }
-            }
-        }
-        smsSentValue.setText(String.valueOf(totalSent));
+        smsSentValue.setText(query.getTotalSent());
     }
 
     private void startTwoNProcess() {

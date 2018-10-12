@@ -1,5 +1,7 @@
 package DBOps;
 
+import javafx.scene.control.TextArea;
+
 import java.sql.*;
 
 public class DatabaseQuery {
@@ -7,12 +9,48 @@ public class DatabaseQuery {
     private Statement stmt;
     private Connection conn;
     private ResultSet rs;
+    private int totalSent;
 
     public DatabaseQuery(String url) throws SQLException {
 
         conn = DriverManager.getConnection(url);
         stmt = conn.createStatement();
 
+    }
+
+    public void getHyperDataFromDb(TextArea textArea){
+
+        int numberSent;
+        String simID;
+
+        textArea.setText("DB Query Results.....\n");
+
+        for (int card = 21; card <= 28; card++) {
+
+            for (int port = 1; port <= 4; port++) {
+
+                textArea.appendText("\n");
+                for (int pos = 1; pos <= 4; pos++) {
+
+                    String sqlCommand = "SELECT scid, SUM(length) FROM hyper WHERE card = '" + card + "' AND port = '" +
+                            port + "' AND position = '" + pos + "';";
+
+                    simID = simID(sqlCommand);
+                    numberSent = results(sqlCommand);
+
+                    textArea.appendText(card + " / " + port + " / " + pos + " - [count = " + numberSent +
+                            "]        \t[SCID: " + simID + "]\n");
+
+                    totalSent += numberSent;
+                }
+            }
+        }
+
+    }
+
+    public String getTotalSent(){
+
+        return String.valueOf(totalSent);
     }
 
     public int results(String sqlCommand) {
