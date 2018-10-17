@@ -196,6 +196,8 @@ public class Main extends Application {
             ReadFileInterface operation = new ReadTwonDataIntoDb(url);
             System.out.println(operation.initDatabase() + "\n");
 
+            operation.getData(filePath);
+
 
         }catch(SQLException e){
             System.out.println(e.getMessage());
