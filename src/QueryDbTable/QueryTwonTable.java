@@ -10,6 +10,7 @@ public class QueryTwonTable implements QueryTableInterface {
     private Statement stmt;
     private Connection conn;
     private ResultSet rs;
+    private String sqlCommand;
 
     public QueryTwonTable(String url) throws SQLException {
 
@@ -23,6 +24,7 @@ public class QueryTwonTable implements QueryTableInterface {
 
         String simID;
         int totalMins;
+
         textArea.setText("DB query results....\n");
 
         for (int port = 0; port <= 31; port++) {
@@ -31,11 +33,10 @@ public class QueryTwonTable implements QueryTableInterface {
 
             for (int pos = 1; pos <= 4; pos++) {
 
-                String sqlCommand = "SELECT scid, SUM(secs) FROM twon WHERE port = '" +
-                        port + "' AND position = '" + pos + "';";
+                sqlCommand = "SELECT scid, SUM(secs) FROM twon WHERE port = '" + port + "' AND position = '" + pos + "';";
 
-                simID = simID(sqlCommand);
-                totalMins = getTotalUsed(sqlCommand);
+                simID = simID();
+                totalMins = Integer.parseInt(getTotalUsed());
 
 
                 textArea.appendText("g" + port + " / " + pos + " - mins = " + totalMins +
@@ -45,26 +46,7 @@ public class QueryTwonTable implements QueryTableInterface {
         conn.close();
     }
 
-    public int getTotalUsed(String sqlCommand) {
-        int results;
-
-        try {
-            rs = stmt.executeQuery(sqlCommand);
-            results = rs.getInt(2);
-
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            return 0;
-        }
-        return results;
-    }
-
-    @Override
-    public int results(String sqlCommand) {
-        return 0;
-    }
-
-    public String simID(String sqlCommand) {
+    public String simID() {
 
         String simID;
 
@@ -80,6 +62,17 @@ public class QueryTwonTable implements QueryTableInterface {
     }
 
     public String getTotalUsed() {
-        return null;
+
+        String results;
+
+        try {
+            rs = stmt.executeQuery(sqlCommand);
+            results = String.valueOf(rs.getInt(2));
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
+        return results;
     }
 }

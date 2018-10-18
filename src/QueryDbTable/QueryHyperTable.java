@@ -11,6 +11,7 @@ public class QueryHyperTable implements QueryTableInterface {
     private Connection conn;
     private ResultSet rs;
     private int totalSent;
+    private String sqlCommand;
 
     public QueryHyperTable(String url) throws SQLException {
 
@@ -33,10 +34,10 @@ public class QueryHyperTable implements QueryTableInterface {
                 textArea.appendText("\n");
                 for (int pos = 1; pos <= 4; pos++) {
 
-                    String sqlCommand = "SELECT scid, SUM(length) FROM hyper WHERE card = '" + card + "' AND port = '" +
+                    sqlCommand = "SELECT scid, SUM(length) FROM hyper WHERE card = '" + card + "' AND port = '" +
                             port + "' AND position = '" + pos + "';";
 
-                    simID = simID(sqlCommand);
+                    simID = simID();
                     numberSent = results(sqlCommand);
 
                     textArea.appendText(card + " / " + port + " / " + pos + " - [count = " + numberSent +
@@ -55,7 +56,7 @@ public class QueryHyperTable implements QueryTableInterface {
         return String.valueOf(totalSent);
     }
 
-    public int results(String sqlCommand) {
+    private int results(String sqlCommand) {
         int results;
 
         try {
@@ -69,7 +70,7 @@ public class QueryHyperTable implements QueryTableInterface {
         return results;
     }
 
-    public String simID(String sqlCommand) {
+    public String simID() {
 
         String simID;
 

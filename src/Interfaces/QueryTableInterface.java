@@ -10,9 +10,7 @@ public interface QueryTableInterface {
 
     String getTotalUsed();
 
-    int results(String sqlCommand);
-
-    String simID(String sqlCommand);
+    String simID();
 
 
 }
