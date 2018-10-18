@@ -1,7 +1,9 @@
 package MainUIClass;
 
+import Interfaces.QueryTableInterface;
 import QueryDbTable.QueryHyperTable;
 import Interfaces.ReadFileInterface;
+import QueryDbTable.QueryTwonTable;
 import ReadFileIntoDb.ReadHyperDataIntoDb;
 import ReadFileIntoDb.ReadTwonDataIntoDb;
 import javafx.application.Application;
@@ -28,6 +30,7 @@ public class Main extends Application {
     private Boolean isPathValid = false;
     private Label recordsParsedValue;
     private Label smsSentValue;
+    private Label minsUsedValue;
 
     private TextArea textArea;
     private final static String url = "jdbc:sqlite:cdrStore.db";
@@ -42,8 +45,8 @@ public class Main extends Application {
 
         Label smsSent = new Label("SMS Sent:");
         smsSentValue = new Label("0");
-        Label minsUsed = new Label("Mins Used: ");
-        Label minsUsedValue = new Label("0");
+        Label minsUsed = new Label("Total Mins Used: ");
+        minsUsedValue = new Label("0");
         Label recordsParsed = new Label("Records Parsed: ");
         recordsParsedValue = new Label("0");
 
@@ -56,7 +59,7 @@ public class Main extends Application {
         textArea.setPrefHeight(300);
 
         TextField filePathField = new TextField();
-        filePathField.setPrefSize(300, 28);
+        filePathField.setPrefSize(310, 28);
 
         smsSentValue.setMinWidth(40);
 
@@ -85,9 +88,9 @@ public class Main extends Application {
         gridPane.add(minsUsed, 3, 1, 1, 1);
         gridPane.add(minsUsedValue, 4, 1, 1, 1);
 
-        Scene scene = new Scene(gridPane, 390, 400);
+        Scene scene = new Scene(gridPane, 400, 400);
         primaryStage.setScene(scene);
-        primaryStage.setMaxWidth(400);
+        primaryStage.setMaxWidth(410);
         primaryStage.show();
 
         browseButton.setOnAction((event -> chooseFile(filePathField)));
@@ -183,10 +186,11 @@ public class Main extends Application {
 
     private void triggerHyperDataQuery() throws SQLException {
 
-        QueryHyperTable query = new QueryHyperTable(url);
+        QueryTableInterface query = new QueryHyperTable(url);
         query.getDataFromDb(textArea);
 
         smsSentValue.setText(query.getTotalUsed());
+        minsUsedValue.setText("0");
     }
 
     private void startTwoNProcess() {
@@ -198,10 +202,24 @@ public class Main extends Application {
 
             operation.getData(filePath);
 
+            recordsParsedValue.setText(String.valueOf(ReadTwonDataIntoDb.getCount()));
+
+            minsUsedValue.setText(String.valueOf(ReadTwonDataIntoDb.getGrandTotal()));
+
+            triggerTwonDataQuery();
 
         }catch(SQLException e){
             System.out.println(e.getMessage());
         }
+    }
+
+    private void triggerTwonDataQuery() throws SQLException {
+
+        QueryTableInterface query = new QueryTwonTable(url);
+        query.getDataFromDb(textArea);
+
+        smsSentValue.setText("0");
+
     }
 
     private void startQuescomProcess() {
