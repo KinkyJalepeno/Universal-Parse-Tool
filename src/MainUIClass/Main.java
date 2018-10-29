@@ -5,6 +5,7 @@ import QueryDbTable.QueryHyperTable;
 import Interfaces.ReadFileInterface;
 import QueryDbTable.QueryTwonTable;
 import ReadFileIntoDb.ReadHyperDataIntoDb;
+import ReadFileIntoDb.ReadQuescomDataIntoDb;
 import ReadFileIntoDb.ReadTwonDataIntoDb;
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -156,9 +157,10 @@ public class Main extends Application {
 
             startTwoNProcess();
 
-        } else if (filePath.contains("*.tmp") || filePath.contains("*.dat")) {
+        } else if (filePath.contains(".dat") || (filePath.contains(".tmp"))) {
 
             startQuescomProcess();
+            //System.out.println("filePath = " + filePath);
 
         } else {
 
@@ -220,9 +222,29 @@ public class Main extends Application {
 
         smsSentValue.setText("0");
 
+
     }
 
     private void startQuescomProcess() {
+
+        try {
+
+            ReadFileInterface operation = new ReadQuescomDataIntoDb(url);
+            operation.getData(filePath);
+
+            smsSentValue.setText("0");
+            textArea.setText((operation.initDatabase()));
+
+            triggerQuescomDataQuery();
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private void triggerQuescomDataQuery() {
+
+        // TODO implement data query from Quescom database
     }
 
     public static void main(String[] args) {

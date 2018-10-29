@@ -60,7 +60,7 @@ public class ReadHyperDataIntoDb implements ReadFileInterface {
 
     }
 
-    private void addToBatch(String[] dataArray) throws SQLException {
+    public void addToBatch(String[] dataArray) throws SQLException {
 
         conn.setAutoCommit(false);
 
@@ -78,7 +78,7 @@ public class ReadHyperDataIntoDb implements ReadFileInterface {
 
     }
 
-    private void executeBatch() throws SQLException {
+    public void executeBatch() throws SQLException {
 
         stmt.executeBatch();
         conn.commit();

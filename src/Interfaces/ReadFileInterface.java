@@ -8,4 +8,8 @@ public interface ReadFileInterface {
 
     void getData(String filePath) throws SQLException;
 
+    void addToBatch(String[] dataArray) throws SQLException;
+
+    void executeBatch() throws SQLException;
+
 }
