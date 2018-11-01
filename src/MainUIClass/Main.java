@@ -3,6 +3,7 @@ package MainUIClass;
 import Interfaces.QueryTableInterface;
 import QueryDbTable.QueryHyperTable;
 import Interfaces.ReadFileInterface;
+import QueryDbTable.QueryQuescomTable;
 import QueryDbTable.QueryTwonTable;
 import ReadFileIntoDb.ReadHyperDataIntoDb;
 import ReadFileIntoDb.ReadQuescomDataIntoDb;
@@ -230,11 +231,11 @@ public class Main extends Application {
         try {
 
             ReadFileInterface operation = new ReadQuescomDataIntoDb(url);
+            textArea.setText((operation.initDatabase()));
+
             operation.getData(filePath);
 
             smsSentValue.setText("0");
-            textArea.setText((operation.initDatabase()));
-
             triggerQuescomDataQuery();
 
         } catch (SQLException e) {
@@ -242,9 +243,16 @@ public class Main extends Application {
         }
     }
 
-    private void triggerQuescomDataQuery() {
+    private void triggerQuescomDataQuery() throws SQLException {
 
-        // TODO implement data query from Quescom database
+        smsSentValue.setText("0");
+
+        QueryTableInterface query = new QueryQuescomTable(url);
+        query.getDataFromDb(textArea);
+
+        minsUsedValue.setText(String.valueOf(((QueryQuescomTable) query).getTotalMins()));
+
+
     }
 
     public static void main(String[] args) {

@@ -81,7 +81,7 @@ public class ReadQuescomDataIntoDb implements ReadFileInterface {
         String imsi = dataArray[23];
 
         totalSecs += secs;
-        System.out.println(imsi + " " + secs);
+        //System.out.println(imsi + " " + secs);
 
         String sqlCommand = "INSERT into quescom VALUES ('" + imsi + "','" + secs + "');";
 
