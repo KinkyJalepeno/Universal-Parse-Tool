@@ -35,7 +35,7 @@ public class Main extends Application {
     private Label minsUsedValue;
 
     private TextArea textArea;
-    private final static String url = "jdbc:sqlite:cdrStore.db";
+    private final static String url = "jdbc:sqlite:C://sqlite/cdrStore.db";
 
     @Override
     public void start(Stage primaryStage) {
