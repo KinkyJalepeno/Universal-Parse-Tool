@@ -12,6 +12,7 @@ public class ReadHyperDataIntoDb implements ReadFileInterface {
     private Statement stmt;
     private static int count = 0;
     private Connection conn;
+    private int batchCount = 0;
 
     public ReadHyperDataIntoDb(String url) throws SQLException {
 
@@ -46,6 +47,8 @@ public class ReadHyperDataIntoDb implements ReadFileInterface {
 
                 if (text.contains("confirmation")) {
                     continue;
+                }else if(text.equals("")){
+                    continue;
                 }
                 String dataArray[] = text.split("[|]");
 
@@ -62,6 +65,7 @@ public class ReadHyperDataIntoDb implements ReadFileInterface {
 
     public void addToBatch(String[] dataArray) throws SQLException {
 
+        batchCount ++;
         conn.setAutoCommit(false);
 
         String card = (dataArray[1]);
@@ -75,6 +79,9 @@ public class ReadHyperDataIntoDb implements ReadFileInterface {
                 "','" + scid + "','" + simPosition + "');";
 
         stmt.addBatch(sqlCommand);
+        if(batchCount > 999){
+            stmt.executeBatch();
+        }
 
     }
 
