@@ -48,6 +48,7 @@ public class ReadHyperDataIntoDb implements ReadFileInterface {
                 if (text.contains("confirmation")) {
                     continue;
                 }else if(text.equals("")){
+                    count --;
                     continue;
                 }
                 String dataArray[] = text.split("[|]");
@@ -79,9 +80,11 @@ public class ReadHyperDataIntoDb implements ReadFileInterface {
                 "','" + scid + "','" + simPosition + "');";
 
         stmt.addBatch(sqlCommand);
-        if(batchCount > 999){
+        if(batchCount >= 5){
+            batchCount = 0;
             stmt.executeBatch();
         }
+
 
     }
 
