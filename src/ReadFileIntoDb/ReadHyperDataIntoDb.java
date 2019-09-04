@@ -80,7 +80,7 @@ public class ReadHyperDataIntoDb implements ReadFileInterface {
                 "','" + scid + "','" + simPosition + "');";
 
         stmt.addBatch(sqlCommand);
-        if(batchCount >= 5){
+        if(batchCount >= 1000){
             batchCount = 0;
             stmt.executeBatch();
         }

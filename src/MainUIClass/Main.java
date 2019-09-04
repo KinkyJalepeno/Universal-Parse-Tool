@@ -238,7 +238,7 @@ public class Main extends Application {
             smsSentValue.setText("0");
             triggerQuescomDataQuery();
 
-            recordsParsedValue.setText(Integer.toString(((ReadQuescomDataIntoDb) operation).getCount()));
+            recordsParsedValue.setText(String.valueOf(((ReadQuescomDataIntoDb) operation).getCount()));
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -249,10 +249,10 @@ public class Main extends Application {
 
         smsSentValue.setText("0");
 
-        QueryTableInterface query = new QueryQuescomTable(url);
+        QueryQuescomTable query = new QueryQuescomTable(url);
         query.getDataFromDb(textArea);
 
-        minsUsedValue.setText(String.valueOf(((QueryQuescomTable) query).getTotalMins()));
+        minsUsedValue.setText(String.valueOf(query.getTotalMins()));
 
 
     }
