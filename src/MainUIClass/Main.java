@@ -238,6 +238,8 @@ public class Main extends Application {
             smsSentValue.setText("0");
             triggerQuescomDataQuery();
 
+            recordsParsedValue.setText(Integer.toString(((ReadQuescomDataIntoDb) operation).getCount()));
+
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
